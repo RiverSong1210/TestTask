@@ -1,47 +1,29 @@
 package duplicateCounter;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class DuplicatesStringCounter {
 
-    public Map<String, Integer> getWordFrequency(List<String> words) {
-        Map<String, Integer> stat = new TreeMap<>();
+    public static Map<String, Integer> getWordFrequency(List<String> words) {
 
-        for (String word : words) {
-            if (stat.containsKey(word)) {
-                int oldAmount = stat.get(word);
-                oldAmount++;
-                stat.put(word, oldAmount);
-            } else {
-                stat.put(word, 1);
-            }
+        Map <String, Integer>  result = new TreeMap<>();
+
+//        for (String word : words) {
+//            if (result.containsKey(word)) {
+//                result.put(word, result.get(word) +1);
+//            } else {
+//                result.put(word, 1);
+//            }
+//        }
+
+        for (String word :words) {
+            result.put(word, Collections.frequency(words, word));
         }
-        return stat;
-    }
 
-
-    public Map<String, Integer> getWordFrequencyStream(List<String> words) {
-        return words.stream().collect(
-                Collectors.groupingBy(word -> word, TreeMap::new, Collectors.summingInt(word -> 1)));
-
-    }
-
-    public Map<String, Integer> getSortedStat(List<String> words) {
-        Map<String, Integer> stat = getWordFrequency(words);
-        Map<String, Integer> result = new LinkedHashMap<>();
-
-        List<Map.Entry<String, Integer>> keys = new ArrayList<>(stat.entrySet());
-
-        keys.sort(Map.Entry.comparingByValue());
-        Collections.reverse(keys);
-
-        for (Map.Entry<String, Integer> entry : keys) {
-            result.put(entry.getKey(), entry.getValue());
-        }
         return result;
-
     }
-
 
 }
